@@ -1,5 +1,43 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/DjnlXKW9)
-# Homework 3: Deployment Gone Wrong
+This repository contains the full solution for NYU's Application Security Homework 3, which involves deploying a Django-based web application using Docker and Kubernetes, securing secrets with Sealed Secrets, and integrating Prometheus for monitoring. The assignment focuses on security, scalability, and observability in production environments.
+
+---
+
+## ✅ Part 1: Kubernetes Setup & DockerHub Deployment
+
+### ✔️ Completed Tasks
+
+- Successfully containerized the Django app, MySQL DB, and Nginx proxy.
+- Built and deployed all containers via Docker and `kubectl`.
+- Kubernetes cluster fully operational via `minikube`.
+- Verified service availability through `minikube service proxy-service`.
+- Created GitHub Actions CI to push the Django image to DockerHub using [`docker/build-push-action`](https://github.com/docker/build-push-action).
+- All commits signed using GPG.
+
+---
+
+## ✅ Part 2: Securing Secrets with Kubernetes Sealed Secrets
+
+### 🔐 Highlights
+
+- Replaced all plaintext secrets from `settings.py` and Kubernetes `.yaml` files with Sealed Secrets.
+- Applied Kubernetes secrets securely via `part1.yaml`.
+- Verified Django accessed secrets via environment variables at runtime.
+- Used `kubeseal` to generate sealed secrets from Kubernetes `Secret` objects.
+- Full process and command log documented in [`secrets.txt`](./secrets.txt).
+
+---
+
+## ✅ Part 3: Prometheus Monitoring
+
+### 📊 Monitoring Improvements
+
+- Removed insecure Prometheus counters that exposed sensitive information.
+- Added a new Prometheus metric:
+  ```python
+  database_error_return_404 = Counter("database_error_return_404", "DB error caused a 404")# Homework 3: Deployment Gone Wrong
+- Created a Prometheus instance on Kubernetes with custom prometheus.yaml configuration.
+- Verified Prometheus collects and visualizes application metrics.
+- Full setup and configuration described in prometheus.txt.
 
 ## Introduction
 
