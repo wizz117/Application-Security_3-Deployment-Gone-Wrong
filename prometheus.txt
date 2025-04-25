@@ -1,0 +1,22 @@
+1) Remove Unwanted Monitoring
+-While reviewing the GiftcardSite/LegacySite/views.py file, I noticed an unnecessary counter being created in the register_view() function. The counter, named counter_{password}, was designed to track user passwords and display them on the Prometheus UI. This is a serious security and privacy issue as it exposes sensitive user data directly in the monitoring interface. I removed this monitoring code and commented out the tracking logic. There are far better and secure ways to achieve the intended functionality without exposing passwords.
+
+2) Expand Reasonable Monitoring
+-To improve monitoring, I added a Prometheus client Counter to track HTTP 404 errors caused by database issues. This helps identify potential problems in the database layer that might result in users receiving 404 errors.
+-I added the following code to GiftcardSite/LegacySite/views.py: graphs['404_counter'] = Counter('database_error_return_404', 'The total number of HTTP 404 on the website')
+Additionally, I incremented this counter whenever a 404 error was returned in the application by adding the following line in the appropriate sections: graphs['404_counter'].inc()
+This ensures that all HTTP 404 errors caused by database issues are properly tracked and can be analyzed through Prometheus.
+
+3) Add Prometheus
+-To integrate Prometheus with the project, I began by installing Helm, a Kubernetes package manager. I added Helm to my system via the Ubuntu package manager by updating the sources.list file. Once Helm was installed, I used the following command to deploy Prometheus: helm install prometheus prometheus-community/prometheus
+-Next, I configured Prometheus to scrape metrics from the proxy-service. I edited the Prometheus configuration using Kubernetes configmaps. Specifically, I added the following job under the scrape_configs section to target the proxy-service on port 8080: 
+- job_name: proxy-service
+  static_configs:
+  - targets: ["proxy-service:8080"]
+-To make this configuration persistent, I exported it to a file using the following command: kubectl get configmap prometheus-server -o yaml > prometheus.yaml
+-The file, prometheus.yaml, can now be used to reapply the Prometheus configuration if needed in the future.
+
+
+-After implementing these changes, I verified the setup by accessing the Prometheus UI. The new 404 error counter (database_error_return_404) was visible under its respective graph, and the counts were updated whenever a 404 error occurred. Additionally, I checked the /metrics page on the Giftcard website to ensure all metrics were being collected correctly.
+
+-By removing unnecessary monitoring, adding meaningful counters, and setting up Prometheus properly, I improved the observability of the application while safeguarding sensitive data.
