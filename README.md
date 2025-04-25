@@ -39,7 +39,7 @@ This repository contains the full solution for NYU's Application Security Homewo
 - Verified Prometheus collects and visualizes application metrics.
 - Full setup and configuration described in prometheus.txt.
 
-# Homework 3: Deployment Gone Wrong
+## Assignment Question: Homework 3: Deployment Gone Wrong
 ## Introduction
 
 Right when you thought things couldn't get worse, your company decided to
